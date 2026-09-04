@@ -8,14 +8,14 @@ $versionPhp = PHP_VERSION;
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($nomProjet) ?></title>
+    <title><?= htmlspecialchars($nomProjet) ?></title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
-        <h1><?php echo htmlspecialchars($nomProjet) ?></h1>
-        <p>Créé par: <?php echo htmlspecialchars($auteur) ?></p>
-        <p>Version PHP active: <?php echo htmlspecialchars($versionPhp) ?></p>
+        <h1><?= htmlspecialchars($nomProjet) ?></h1>
+        <p>Créé par: <?= htmlspecialchars($auteur) ?></p>
+        <p>Version PHP active: <?= htmlspecialchars($versionPhp) ?></p>
     </header>
 
     <main>
