@@ -23,3 +23,18 @@ Les joueurs de basketball manquent d'un outil centralisé pour trouver des terra
        AllowOverride All
        Require all granted
    </Directory>
+
+## Base de données
+1. Accéder à phpMyAdmin.
+2. Importer le fichier `database/schema.sql` pour créer la structure de la base de données.
+3. Importer le fichier `database/ajout-10-lignes.sql` pour insérer les 10 terrains initiaux.
+
+## Variables d'environnement (Configuration PDO)
+L'application utilise une connexion PDO centralisée. Pour des raisons de sécurité, les informations de connexion ne sont pas dans le code source et doivent être configurées dans Apache (ex: via `SetEnv` dans `httpd.conf`).
+
+Variables requises :
+- `DB_HOST`
+- `DB_PORT`
+- `DB_DATABASE`
+- `DB_USERNAME`
+- `DB_PASSWORD`
