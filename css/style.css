@@ -33,3 +33,43 @@ nav a {
 nav a:hover { 
     color: #FF7300;
  }
+ /* --- En-tête et Menu Horizontal --- */
+.en-tete {
+    display: flex;
+    justify-content: space-between; /* Pousse le logo à gauche et le menu à droite */
+    align-items: center;
+    border-bottom: 3px solid #FF7300;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.en-tete-infos h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.en-tete-infos p {
+    color: #cccccc;
+    margin: 5px 0 0 0;
+    font-size: 0.9em;
+}
+
+.menu-horizontal {
+    display: flex; /* Met les liens sur une seule ligne */
+    gap: 30px; /* Espace entre les liens */
+    margin: 0;
+    padding: 0;
+    border: none; /* Enlève la vieille bordure de ta balise nav */
+}
+
+/* --- Grille des terrains (Cartes) --- */
+.grille-terrains {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Pour enlever les marges de tes <li> existants quand ils sont dans la grille */
+.grille-terrains li {
+    margin-bottom: 0; 
+}
