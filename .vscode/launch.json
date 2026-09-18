@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Ecouter Xdebug avec AMPPS",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "C:/Program Files/Ampps/www/CourtSync": "${workspaceRoot}"
+            }
+        }
+    ]
+}
+        
+    
+           
