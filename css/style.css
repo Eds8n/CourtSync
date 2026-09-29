@@ -1,19 +1,165 @@
+* { box-sizing: border-box; }
+
 body {
     background-color: #121212;
     color: #F3F4F6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    line-height: 1.6;
 }
-h1 { color: #FF7300; }
-ul { list-style: none; padding: 0; }
-li {
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+h1, h2, h3 { color: #FF7300; }
+
+a {
+    color: #00E676;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover { color: #FF7300; }
+
+/* EN-TÊTE */
+.en-tete {
+    background-color: #1A1A1A;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #FF7300;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.en-tete-infos h1 { margin: 0; font-size: 2rem; }
+
+.menu-horizontal {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.menu-horizontal li {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.menu-horizontal a, .btn-deconnexion {
+    color: #00E676;
+    font-weight: bold;
+    font-size: 1.1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.menu-horizontal a:hover, .btn-deconnexion:hover {
+    color: #FF7300;
+}
+
+/* NOUVEAU : Message de bienvenue centré */
+.message-bienvenue {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #00E676;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+}
+
+/* GRILLES */
+main ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+main li {
     background-color: #242424;
-    margin-bottom: 15px;
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
-    border-left: 5px solid #FF7300;
+    border-left: 6px solid #FF7300;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    /* CORRECTION DU CLIC : Ces deux lignes forcent l'élément à rester cliquable */
+    position: relative; 
+    z-index: 1;
 }
-nav { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #333; }
-nav a { color: #00E676; text-decoration: none; margin-right: 15px; font-weight: bold; }
-nav a:hover { color: #FF7300; }
+
+main li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+    z-index: 2; /* Garde l'élément au premier plan au survol */
+}
+
+/* FORMULAIRES : Centrés par défaut ! */
+form {
+    background-color: #1A1A1A;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 500px;
+    border: 1px solid #333;
+    /* C'est cette ligne qui centre tes formulaires d'inscription/connexion : */
+    margin: 0 auto 30px auto; 
+}
+
+/* Sauf les petits boutons dans les cartes qui ne doivent pas être centrés */
+main li form, .menu-horizontal form {
+    background: none;
+    padding: 0;
+    border: none;
+    margin: 0;
+    display: inline-block;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ccc;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="datetime-local"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #2A2A2A;
+    color: #FFF;
+    font-size: 1rem;
+}
+
+input:focus { outline: none; border-color: #FF7300; }
+
+button[type="submit"] {
+    background-color: #FF7300;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover { background-color: #e66a00; }
+
+hr { border: 0; height: 1px; background: #333; margin: 40px 0; }
