@@ -1,64 +1,51 @@
 # CourtSync
 
-**Auteur :** Edson Eugene
-**Description :** Application Web transactionnelle de gestion et d'organisation de matchs de basketball locaux.
+Application de gestion et de partage de terrains sportifs, de planification de matchs et de publication de récits de jeu.
 
-## Le problème à résoudre
-Les joueurs de basketball manquent d'un outil centralisé pour trouver des terrains disponibles, organiser des "pick-up games" et coordonner les présences de manière spontanée.
+---
 
-## Prérequis et Logiciels
-- **Environnement local :** AMPPS
-- **Serveur Web :** Apache
-- **Langage :** PHP (Version 8.x)
-- **Base de données :** MySQL
+## 1. Description du domaine et récits utilisateurs
 
-## Installation et Démarrage
-1. Cloner ce dépôt dans votre répertoire de projets local.
-2. Démarrer les services Apache et MySQL depuis le panneau de contrôle AMPPS.
-3. Ajouter la configuration suivante dans le fichier de configuration Apache (`httpd.conf` ou vhosts) :
-   ```apache
-   Alias /projet "C:\Users\eugen\CourtSync\projet"
-   <Directory "C:\Users\eugen\CourtSync\projet">
-       Options -Indexes +FollowSymLinks
-       AllowOverride All
-       Require all granted
-   </Directory>
+### Domaine
+CourtSync permet aux passionnés de sport de repérer des terrains (intérieurs ou extérieurs), d'organiser des matchs entre utilisateurs et de partager des récits/commentaires d'expériences de jeu.
 
-## Base de données
-1. Accéder à phpMyAdmin.
-2. Importer le fichier `database/schema.sql` pour créer la structure de la base de données.
-3. Importer le fichier `database/ajout-10-lignes.sql` pour insérer les 10 terrains initiaux.
+### Schéma de données (Migrations Laravel 12)
+- **`users`** : Comptes d'utilisateurs (géré par Laravel avec sessions et authentification).
+- **`terrains`** : Liste des infrastructures sportives (nom, adresse, type).
+- **`matchs`** : Rencontres sportives planifiées (date/heure, liaison terrain et utilisateur).
+- **`recits`** : Expériences et retours de matchs (contenu texte, liaison terrain et utilisateur).
 
-## Variables d'environnement (Configuration PDO)
-L'application utilise une connexion PDO centralisée. Pour des raisons de sécurité, les informations de connexion ne sont pas dans le code source et doivent être configurées dans Apache (ex: via `SetEnv` dans `httpd.conf`).
+### État des récits utilisateurs
+> *Conformément aux directives du Chapitre 6, les récits du Chapitre 4 ont été réinitialisés pour la migration vers Laravel 12. Les fonctionnalités MVC personnalisées ont été retirées et seront reconstruites avec Eloquent, Blade et l'authentification Laravel aux chapitres 7 à 9.*
 
-Variables requises :
-- `DB_HOST`
-- `DB_PORT`
-- `DB_DATABASE`
-- `DB_USERNAME`
-- `DB_PASSWORD`
+- [ ] **US-01 : Consultation des terrains** — Afficher la liste des terrains sportifs et leurs détails (prévu au Chapitre 7).
+- [ ] **US-02 : Planification de matchs** — Créer et planifier un match sur un terrain spécifique.
+- [ ] **US-03 : Publication de récits** — Partager un résumé ou une expérience vécue sur un terrain.
+- [ ] **US-04 : Authentification et profils** — Inscription et connexion sécurisée via le système d'authentification Laravel.
 
-## Architecture et Fonctionnalités (Chapitre 3)
-Le projet utilise désormais une **architecture MVC (Modèle-Vue-Contrôleur)** centralisée pour séparer la logique d'affaires de l'interface utilisateur.
-- **Routeur frontal :** Un point d'entrée unique (`index.php`) gère la navigation et les requêtes.
-- **Opérations CRUD :** Possibilité de consulter la liste des terrains, de voir le détail d'un terrain spécifique, ainsi que de planifier (Ajouter) ou d'annuler (Supprimer) des matchs.
-- **Sécurité :** Les formulaires d'écriture et de suppression sont protégés contre les fausses requêtes par un système de jetons CSRF lié à la session.
-- **Interface UI :** Affichage stylisé avec CSS Grid et Flexbox (sans styles en ligne).
+---
 
-## Le problème à résoudre
-Les joueurs de basketball manquent d'un outil centralisé pour trouver des terrains disponibles, organiser des "pick-up games" et coordonner les présences de manière spontanée.
+## 2. Architecture technique
 
-## Prérequis et Logiciels
-- **Environnement local :** AMPPS
-- **Serveur Web :** Apache
-- **Langage :** PHP (Version 8.x)
-- **Base de données :** MySQL
+- **Framework :** Laravel 12 (PHP 8.2)
+- **Serveur Web :** Apache avec `mod_rewrite` (DocumentRoot pointant sur `/public`)
+- **Base de données :** MySQL 8.4
+- **Conteneurisation :** Docker & Docker Compose
+- **Intégration continue (CI) :** GitHub Actions (validation syntaxique Compose, build image et lint PHP)
 
+---
 
-## Mise à jour - Chapitre 4 (POO, Routeur et Authentification)
-Le projet a été entièrement refactorisé pour respecter les standards modernes de développement Web :
-- **Programmation Orientée Objet (POO) :** Les modèles (Terrains, Matchs, Utilisateurs) et les contrôleurs sont désormais des classes instanciées, héritant d'une connexion PDO centralisée.
-- **Routage et URL lisibles :** Remplacement de la navigation procédurale par un routeur explicite. Un fichier `.htaccess` permet la réécriture d'URL (ex: `/terrain-detail/1` au lieu de `index.php?action=terrain-detail&id=1`).
-- **Authentification sécurisée :** Ajout d'un système de création de compte et de connexion par courriel. Les mots de passe sont hachés avec `password_hash()` et la session utilisateur est protégée (HttpOnly, SameSite).
-- **Récit de modification :** Implémentation complète de la modification des matchs avec formulaire prérempli et validation côté serveur.
+## 3. Guide de démarrage et reconstruction
+
+Pour cloner et démarrer le projet sur une nouvelle machine :
+
+### Prérequis
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) en cours d'exécution.
+- Git.
+
+### Étapes d'installation
+
+1. **Cloner le dépôt et entrer dans le dossier :**
+   ```powershell
+   git clone [https://github.com/Eds8n/CourtSync.git](https://github.com/Eds8n/CourtSync.git)
+   cd CourtSync
