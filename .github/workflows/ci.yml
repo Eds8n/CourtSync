@@ -1,0 +1,27 @@
+name: Intégration continue CourtSync
+
+on:
+  push:
+    branches: [ "main", "test-ci-erreur" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code source
+        uses: actions/checkout@v4
+
+      - name: Valider la syntaxe des fichiers Compose
+        run: docker compose config --quiet
+
+      - name: Construire l'image Docker de l'application
+        run: docker build -t courtsync-app:test .
+
+      - name: Vérifier la syntaxe PHP (Lint)
+        run: |
+          docker run --rm courtsync-app:test bash -c '
+            find . -type f -name "*.php" ! -path "./vendor/*" -exec php -l {} +
+          '
