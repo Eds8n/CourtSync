@@ -49,3 +49,13 @@ Pour cloner et démarrer le projet sur une nouvelle machine :
    ```powershell
    git clone [https://github.com/Eds8n/CourtSync.git](https://github.com/Eds8n/CourtSync.git)
    cd CourtSync
+
+
+## 5. Nouvelles Routes (Chapitre 7)
+- `GET /terrains` : Liste paginée des terrains
+- `GET /terrains/create` : Formulaire d'ajout
+- `POST /terrains` : Enregistrement avec validation
+- `GET /terrains/{terrain}` : Détail d'un terrain
+- `GET /terrains/{terrain}/edit` : Formulaire de modification
+- `PATCH /terrains/{terrain}` : Mise à jour
+- `DELETE /terrains/{terrain}` : Suppression
