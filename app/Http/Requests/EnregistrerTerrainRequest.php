@@ -12,11 +12,12 @@ class EnregistrerTerrainRequest extends FormRequest
     }
 
     public function rules(): array
-    {
-        return [
-            'nom' => ['required', 'string', 'max:100'],
-            'adresse' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'string', 'max:50'],
-        ];
-    }
+{
+    return [
+        'nom' => ['required', 'string', 'max:255'],
+        'adresse' => ['required', 'string', 'max:255'],
+        'type' => ['required', 'in:Interieur,Exterieur'],
+        'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+    ];
+}
 }

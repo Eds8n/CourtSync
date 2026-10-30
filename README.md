@@ -59,3 +59,16 @@ Pour cloner et démarrer le projet sur une nouvelle machine :
 - `GET /terrains/{terrain}/edit` : Formulaire de modification
 - `PATCH /terrains/{terrain}` : Mise à jour
 - `DELETE /terrains/{terrain}` : Suppression
+
+
+
+# CourtSync - Chapitre 08
+
+## Fonctionnalités complétées
+* **Gestion des fichiers :** Téléversement, remplacement et suppression d'images pour les terrains (Phase 1).
+* **Recherche asynchrone :** API JSON avec Fetch pour rechercher dynamiquement par nom ou adresse (Phase 2).
+* **Internationalisation (i18n) :** Interface bilingue (FR/EN) gérée par session et middleware (Phase 3).
+* **Design System :** Interface "Street Rouge Sang" avec CSS Grid, variables personnalisées et thème sombre.
+
+## Récits utilisateurs
+Les récits (User Stories) ont été intégrés directement dans l'application sur la page statique `/recits`.

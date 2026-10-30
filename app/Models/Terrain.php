@@ -10,7 +10,12 @@ class Terrain extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'adresse', 'type'];
+    protected $fillable = [
+    'nom',
+    'adresse',
+    'type',
+    'image_path',
+];
 
     public function matchs(): HasMany
     {

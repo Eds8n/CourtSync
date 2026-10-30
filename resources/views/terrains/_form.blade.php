@@ -14,4 +14,11 @@
     <input id="type" name="type" value="{{ old('type', $terrain?->type) }}">
     @error('type') <p style="color:red;">{{ $message }}</p> @enderror
 </div>
+<div>
+    <label for="image">Photo du terrain (optionnelle)</label>
+    <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp">
+    @error('image') 
+        <p style="color: red;">{{ $message }}</p> 
+    @enderror
+</div>
 <button type="submit">Enregistrer le terrain</button>
