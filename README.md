@@ -72,3 +72,16 @@ Pour cloner et démarrer le projet sur une nouvelle machine :
 
 ## Récits utilisateurs
 Les récits (User Stories) ont été intégrés directement dans l'application sur la page statique `/recits`.
+
+
+# CourtSync - Chapitre 09
+
+## Fonctionnalités complétées
+* **Authentification complète :** Inscription, connexion et déconnexion avec gestion sécurisée des sessions.
+* **Sécurité de l'inscription :** Intégration de Google reCAPTCHA v2 (validation côté serveur) pour prévenir les soumissions automatisées.
+* **Gestion des rôles :** Système d'autorisation basé sur deux rôles (`joueur` attribué par défaut, et `admin`).
+* **Protection des routes (Middlewares) :** 
+  * Les visiteurs sont redirigés vers la connexion pour les actions privées (`auth`).
+  * La section `/administration` est strictement réservée aux administrateurs via un middleware personnalisé (`EnsureAdmin`).
+* **Politiques de sécurité (Policies) :** Les terrains sont désormais liés à leur créateur (`user_id`). Une `TerrainPolicy` garantit que seul le propriétaire (ou un administrateur) peut modifier ou supprimer un terrain. L'interface s'adapte en cachant les boutons d'action aux utilisateurs non autorisés.
+* **Page Mon compte :** Affichage d'un tableau de bord personnalisé listant uniquement les terrains créés par l'utilisateur connecté.

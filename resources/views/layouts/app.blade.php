@@ -9,11 +9,30 @@
 </head>
 <body>
 <header style="display: flex; justify-content: space-between; align-items: center;">
-    <nav style="display: flex; gap: 20px;">
+    <nav style="display: flex; gap: 20px; align-items: center;">
         <a href="{{ url('/') }}">Accueil</a>
         <a href="{{ route('terrains.index') }}">Terrains</a>
         <a href="{{ url('/recits') }}">Récits</a>
-    </nav>
+
+        @auth
+    <a href="{{ route('account.show') }}">Mon compte</a>
+    
+    @if (auth()->user()?->role === \App\Models\User::ROLE_ADMIN)
+        <a href="{{ route('admin.index') }}" style="color: #ff073a;">Administration</a>
+    @endif
+
+    <form method="post" action="{{ route('logout') }}" style="margin: 0; display: inline;">
+        @csrf
+        <button type="submit" style="background: transparent; border: 1px solid var(--accent-red); color: var(--accent-red); padding: 5px 10px; font-size: 0.9em;">Déconnexion</button>
+    </form>
+@else
+    <a href="{{ route('login') }}">Connexion</a>
+    @if (Route::has('register'))
+    <a href="{{ route('register') }}" style="color: white; background: var(--accent-red); padding: 5px 10px; border-radius: 2px;">
+        S'inscrire
+    </a>
+@endif
+@endauth
     
     <form method="post" action="{{ route('locale.update') }}" style="margin: 0; padding: 0; background: transparent; border: none;">
         @csrf
