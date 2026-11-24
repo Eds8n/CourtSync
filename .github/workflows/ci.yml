@@ -1,17 +1,34 @@
-name: Construire l'application Laravel
+name: Construire et tester CourtSync
 
 on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   verifier:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Recuperer le code
+        uses: actions/checkout@v4
 
       - name: Construire l'image du commit
         run: docker build --pull -t app-php:${{ github.sha }} .
 
-      - name: Vérifier la syntaxe PHP
-        run: docker run --rm app-php:${{ github.sha }} php -l public/index.php
+      - name: Verifier la syntaxe PHP
+        run: |
+          docker run --rm app-php:${{ github.sha }} sh -c '
+            find app routes database tests -type f -name "*.php" -print0 |
+            xargs -0 -n 1 php -l
+          '
+
+      - name: Executer les tests
+        run: |
+          docker run --rm app-php:${{ github.sha }} sh -c '
+            touch .env &&
+            php artisan config:clear &&
+            php artisan test
+          '
