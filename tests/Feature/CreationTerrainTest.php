@@ -69,4 +69,26 @@ class CreationTerrainTest extends TestCase
     $response->assertSessionHasErrors('nom');
     $this->assertDatabaseCount('terrains', 0);
     }
+
+    public function test_un_joueur_ne_peut_pas_creer_un_terrain(): void
+{
+    // Préparer
+    $joueur = User::factory()->create([
+        'role' => User::ROLE_JOUEUR,
+    ]);
+
+    // Agir
+    $response = $this->actingAs($joueur)->post(
+        route('terrains.store'),
+        [
+            'nom' => 'Terrain interdit',
+            'adresse' => '475 boulevard de l’Avenir, Laval',
+            'type' => 'Interieur',
+        ]
+    );
+
+    // Vérifier
+    $response->assertForbidden();
+    $this->assertDatabaseCount('terrains', 0);
+}
 }
