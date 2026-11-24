@@ -29,4 +29,17 @@ class ConsultationTerrainTest extends TestCase
         );
         $response->assertSee('Terrain Montmorency');
     }
+
+    public function test_un_terrain_inexistant_retourne_404(): void
+{
+    // Préparer : aucun terrain dans la base de test
+
+    // Agir
+    $response = $this->get(route('terrains.show', [
+        'terrain' => 999999,
+    ]));
+
+    // Vérifier
+    $response->assertNotFound();
+}
 }
