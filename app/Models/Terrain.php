@@ -15,6 +15,7 @@ class Terrain extends Model
     'adresse',
     'type',
     'image_path',
+    'user_id',
 ];
 
     public function matchs(): HasMany
