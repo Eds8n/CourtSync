@@ -14,8 +14,8 @@ class EnregistrerTerrainRequest extends FormRequest
     public function rules(): array
 {
     return [
-        'nom' => ['required', 'string', 'max:255'],
-        'adresse' => ['required', 'string', 'max:255'],
+        'nom' => ['required', 'string', 'max:40'],
+        'adresse' => ['required', 'string', 'max:60'],
         'type' => ['required', 'in:Interieur,Exterieur'],
         'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
     ];
