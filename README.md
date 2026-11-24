@@ -1,87 +1,177 @@
 # CourtSync
 
-Application de gestion et de partage de terrains sportifs, de planification de matchs et de publication de récits de jeu.
+Projet étudiant développé avec Laravel 12 pour consulter et gérer des terrains sportifs.
 
----
+Le domaine prévoit également la planification de matchs et la publication de récits. Ces deux fonctionnalités restent à compléter.
 
-## 1. Description du domaine et récits utilisateurs
+## Fonctionnalités
 
-### Domaine
-CourtSync permet aux passionnés de sport de repérer des terrains (intérieurs ou extérieurs), d'organiser des matchs entre utilisateurs et de partager des récits/commentaires d'expériences de jeu.
+- Consultation publique des terrains et de leurs détails.
+- Liste paginée à raison de 10 terrains par page.
+- Recherche asynchrone par nom ou adresse, limitée à 8 résultats.
+- Ajout, modification et suppression des terrains réservés aux administrateurs.
+- Téléversement, remplacement et suppression des images.
+- Inscription avec validation Google reCAPTCHA côté serveur.
+- Connexion et déconnexion avec authentification par session.
+- Rôles `joueur` et `admin`.
+- Page « Mon compte » affichant uniquement les terrains de l'utilisateur connecté.
+- Choix de langue français ou anglais conservé en session.
 
-### Schéma de données (Migrations Laravel 12)
-- **`users`** : Comptes d'utilisateurs (géré par Laravel avec sessions et authentification).
-- **`terrains`** : Liste des infrastructures sportives (nom, adresse, type).
-- **`matchs`** : Rencontres sportives planifiées (date/heure, liaison terrain et utilisateur).
-- **`recits`** : Expériences et retours de matchs (contenu texte, liaison terrain et utilisateur).
+## État des récits utilisateurs
 
-### État des récits utilisateurs
-> *Conformément aux directives du Chapitre 6, les récits du Chapitre 4 ont été réinitialisés pour la migration vers Laravel 12. Les fonctionnalités MVC personnalisées ont été retirées et seront reconstruites avec Eloquent, Blade et l'authentification Laravel aux chapitres 7 à 9.*
+- [x] US-01 : consulter la liste et les détails des terrains.
+- [ ] US-02 : créer et planifier des matchs.
+- [ ] US-03 : publier des récits de jeu.
+- [x] US-04 : s'inscrire, se connecter et consulter son compte.
 
-- [ ] **US-01 : Consultation des terrains** — Afficher la liste des terrains sportifs et leurs détails (prévu au Chapitre 7).
-- [ ] **US-02 : Planification de matchs** — Créer et planifier un match sur un terrain spécifique.
-- [ ] **US-03 : Publication de récits** — Partager un résumé ou une expérience vécue sur un terrain.
-- [ ] **US-04 : Authentification et profils** — Inscription et connexion sécurisée via le système d'authentification Laravel.
+La page `/recits` présente les récits utilisateurs du projet. Elle ne constitue pas encore une fonctionnalité de publication de récits.
 
----
+## Architecture technique
 
-## 2. Architecture technique
+- Laravel 12 et PHP 8.2.
+- Eloquent et vues Blade.
+- Apache avec `mod_rewrite`.
+- MySQL 8.4 pour l'application.
+- Docker et Docker Compose.
+- PHPUnit avec SQLite en mémoire pour les tests.
+- GitHub Actions pour construire l'image et exécuter les tests.
 
-- **Framework :** Laravel 12 (PHP 8.2)
-- **Serveur Web :** Apache avec `mod_rewrite` (DocumentRoot pointant sur `/public`)
-- **Base de données :** MySQL 8.4
-- **Conteneurisation :** Docker & Docker Compose
-- **Intégration continue (CI) :** GitHub Actions (validation syntaxique Compose, build image et lint PHP)
-
----
-
-## 3. Guide de démarrage et reconstruction
-
-Pour cloner et démarrer le projet sur une nouvelle machine :
+## Démarrage
 
 ### Prérequis
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) en cours d'exécution.
+
 - Git.
+- Docker Desktop démarré.
+- Un fichier `.env` configuré pour l'environnement Docker.
 
-### Étapes d'installation
+### Installation
 
-1. **Cloner le dépôt et entrer dans le dossier :**
-   ```powershell
-   git clone [https://github.com/Eds8n/CourtSync.git](https://github.com/Eds8n/CourtSync.git)
-   cd CourtSync
+```bash
+git clone https://github.com/Eds8n/CourtSync.git
+cd CourtSync
+```
 
+Créer le fichier de configuration à partir de l'exemple :
 
-## 5. Nouvelles Routes (Chapitre 7)
-- `GET /terrains` : Liste paginée des terrains
-- `GET /terrains/create` : Formulaire d'ajout
-- `POST /terrains` : Enregistrement avec validation
-- `GET /terrains/{terrain}` : Détail d'un terrain
-- `GET /terrains/{terrain}/edit` : Formulaire de modification
-- `PATCH /terrains/{terrain}` : Mise à jour
-- `DELETE /terrains/{terrain}` : Suppression
+```bash
+cp .env.example .env
+```
 
+Configurer les paramètres MySQL conformément au fichier Compose.
+Depuis le conteneur de l'application, le serveur MySQL est accessible avec l'hôte `db` et le port `3306`.
 
+Configurer également les clés Google reCAPTCHA correspondant aux paramètres de `config/services.php`. Elles sont nécessaires pour l'inscription réelle et ne doivent pas être publiées dans Git.
 
-# CourtSync - Chapitre 08
+Construire et démarrer les conteneurs :
 
-## Fonctionnalités complétées
-* **Gestion des fichiers :** Téléversement, remplacement et suppression d'images pour les terrains (Phase 1).
-* **Recherche asynchrone :** API JSON avec Fetch pour rechercher dynamiquement par nom ou adresse (Phase 2).
-* **Internationalisation (i18n) :** Interface bilingue (FR/EN) gérée par session et middleware (Phase 3).
-* **Design System :** Interface "Street Rouge Sang" avec CSS Grid, variables personnalisées et thème sombre.
+```bash
+docker compose up --build -d
+```
 
-## Récits utilisateurs
-Les récits (User Stories) ont été intégrés directement dans l'application sur la page statique `/recits`.
+Initialiser l'application :
 
+```bash
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate
+docker compose exec app php artisan storage:link
+```
 
-# CourtSync - Chapitre 09
+L'application est accessible à l'adresse :
 
-## Fonctionnalités complétées
-* **Authentification complète :** Inscription, connexion et déconnexion avec gestion sécurisée des sessions.
-* **Sécurité de l'inscription :** Intégration de Google reCAPTCHA v2 (validation côté serveur) pour prévenir les soumissions automatisées.
-* **Gestion des rôles :** Système d'autorisation basé sur deux rôles (`joueur` attribué par défaut, et `admin`).
-* **Protection des routes (Middlewares) :** 
-  * Les visiteurs sont redirigés vers la connexion pour les actions privées (`auth`).
-  * La section `/administration` est strictement réservée aux administrateurs via un middleware personnalisé (`EnsureAdmin`).
-* **Politiques de sécurité (Policies) :** Les terrains sont désormais liés à leur créateur (`user_id`). Une `TerrainPolicy` garantit que seul le propriétaire (ou un administrateur) peut modifier ou supprimer un terrain. L'interface s'adapte en cachant les boutons d'action aux utilisateurs non autorisés.
-* **Page Mon compte :** Affichage d'un tableau de bord personnalisé listant uniquement les terrains créés par l'utilisateur connecté.
+http://localhost:8080
+
+Si le lien de stockage existe déjà, il n'est pas nécessaire de le recréer.
+
+### Arrêt
+
+```bash
+docker compose stop
+```
+
+## Données et permissions
+
+Les principales tables du domaine sont :
+
+- `users` : comptes et rôles.
+- `terrains` : informations du terrain, image et référence au créateur.
+- `matchs` : données prévues pour les rencontres sportives.
+- `recits` : données prévues pour les expériences de jeu.
+
+Un nouveau compte reçoit le rôle `joueur`. Envoyer un rôle `admin` dans le formulaire d'inscription ne permet pas d'obtenir ce rôle.
+
+La consultation des terrains est publique. Les routes de gestion sont protégées par les middlewares `auth` et `EnsureAdmin`. Une policy intervient également pour les modifications et suppressions.
+
+## Routes principales
+
+| Méthode | Adresse | Accès |
+| --- | --- | --- |
+| GET | `/terrains` | Public |
+| GET | `/terrains/{terrain}` | Public |
+| GET | `/recherche/terrains?q=terme` | Public |
+| GET | `/terrains/create` | Administrateur |
+| POST | `/terrains` | Administrateur |
+| GET | `/terrains/{terrain}/edit` | Administrateur |
+| PUT/PATCH | `/terrains/{terrain}` | Administrateur |
+| DELETE | `/terrains/{terrain}` | Administrateur |
+| DELETE | `/terrains/{terrain}/image` | Administrateur |
+| GET/POST | `/inscription` | Visiteur non connecté |
+| GET/POST | `/connexion` | Visiteur non connecté |
+| POST | `/deconnexion` | Utilisateur connecté |
+| GET | `/compte` | Utilisateur connecté |
+| GET | `/administration` | Administrateur |
+| POST | `/langue` | Public |
+
+## Chapitre 10 — Tests et intégration continue
+
+### Exécuter les tests
+
+Toute la suite :
+
+```bash
+docker compose exec app php artisan test
+```
+
+Un fichier précis :
+
+```bash
+docker compose exec app php artisan test tests/Feature/CreationTerrainTest.php
+```
+
+### Scénarios vérifiés
+
+| Fichier | Principales vérifications |
+| --- | --- |
+| `ConsultationTerrainTest` | Consultation d'un terrain et réponse 404 |
+| `CreationTerrainTest` | Création, champs invalides et permissions |
+| `GestionTerrainTest` | Modification, suppression, permissions et conservation des données après refus |
+| `TerrainImageTest` | Téléversement, validation, remplacement et suppression des fichiers |
+| `InscriptionTest` | Inscription, validation, doublons, rôle et réponses reCAPTCHA |
+| `AuthentificationTest` | Connexion, déconnexion et isolation des données du compte |
+| `RechercheTerrainTest` | Liste, pagination, recherche, tri, limite et paramètres invalides |
+
+La dernière exécution locale a réussi : **57 tests et 215 assertions**, incluant les deux tests d'exemple de Laravel.
+
+### Isolation
+
+Les tests utilisant la base de données emploient `RefreshDatabase` avec SQLite en mémoire.
+
+Les appels reCAPTCHA sont simulés avec `Http::fake()`. Les requêtes HTTP externes non prévues sont bloquées avec `Http::preventStrayRequests()`.
+
+Le stockage public est simulé avec `Storage::fake('public')`. Les notifications sont également simulées.
+
+### Démarche de validation
+
+Les scénarios couvrent les cas de réussite et les échecs pertinents : données invalides, absence d'authentification, permission insuffisante et ressource inexistante.
+
+Les tests d'écriture refusée vérifient également que les données concernées restent intactes.
+
+### GitHub Actions
+
+Le workflow `.github/workflows/ci.yml` est configuré pour chaque push et chaque pull request afin de :
+
+1. Récupérer le code du commit.
+2. Construire l'image Docker.
+3. Vérifier la syntaxe des fichiers PHP.
+4. Exécuter la suite de tests.
+
+Le résultat distant doit être vérifié dans l'onglet **Actions** du dépôt après le push.

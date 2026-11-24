@@ -131,4 +131,26 @@ public function test_un_nom_de_plus_de_40_caracteres_est_refuse(): void
     $response->assertSessionHasErrors('nom');
     $this->assertDatabaseCount('terrains', 0);
 }
+
+public function test_une_adresse_de_plus_de_60_caracteres_est_refusee(): void
+{
+    // Préparer
+    $admin = User::factory()->create([
+        'role' => User::ROLE_ADMIN,
+    ]);
+
+    // Agir
+    $response = $this->actingAs($admin)->post(
+        route('terrains.store'),
+        [
+            'nom' => 'Terrain Montmorency',
+            'adresse' => str_repeat('A', 61),
+            'type' => 'Interieur',
+        ]
+    );
+
+    // Vérifier
+    $response->assertSessionHasErrors('adresse');
+    $this->assertDatabaseCount('terrains', 0);
+}
 }
