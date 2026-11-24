@@ -91,4 +91,21 @@ class CreationTerrainTest extends TestCase
     $response->assertForbidden();
     $this->assertDatabaseCount('terrains', 0);
 }
+
+public function test_un_visiteur_ne_peut_pas_creer_un_terrain(): void
+{
+    // Préparer
+    $donnees = [
+        'nom' => 'Terrain visiteur',
+        'adresse' => '475 boulevard de l’Avenir, Laval',
+        'type' => 'Interieur',
+    ];
+
+    // Agir
+    $response = $this->post(route('terrains.store'), $donnees);
+
+    // Vérifier
+    $response->assertRedirect(route('login'));
+    $this->assertDatabaseCount('terrains', 0);
+}
 }
