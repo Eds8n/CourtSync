@@ -46,4 +46,27 @@ class CreationTerrainTest extends TestCase
             route('terrains.show', $terrain)
         );
     }
+
+    public function test_un_nom_vide_empeche_la_creation(): void
+    {
+
+    // preparer 
+    $admin = User::factory()->create([
+        'role' => User::ROLE_ADMIN,
+    ]);
+
+    //Agir
+    $response = $this->actingAs($admin)->post(
+        route('terrains.store'),
+        [
+            'nom' => '',
+            'adresse' => '475 boulevard de l’Avenir, Laval',
+            'type' => 'Interieur',
+        ]
+    );
+
+    // Verifier 
+    $response->assertSessionHasErrors('nom');
+    $this->assertDatabaseCount('terrains', 0);
+    }
 }
